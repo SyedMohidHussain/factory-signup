@@ -20,6 +20,7 @@ function FactorySignup() {
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const[loader,setLoader]=useState(false)
 
   // Fetch factories from the backend
   const fetchFactories = async () => {
@@ -43,11 +44,12 @@ function FactorySignup() {
     }
 
     try {
+      setLoader(true);
       const response = await axios.post("http://localhost:5000/api/factory", {
         name,
         description,
       });
-
+      setLoader(false)
       setSuccess("Factory created successfully!");
       setFactories((prevFactories) => [...prevFactories, response.data.factory]);
       setName("");
@@ -105,7 +107,7 @@ function FactorySignup() {
                   sx={{ mb: 2 }}
                 />
 
-                <Button type="submit" variant="contained" color="primary" fullWidth>
+                <Button loading={loader} type="submit" variant="contained" color="primary" fullWidth>
                  Register
                 </Button>
               </Box>

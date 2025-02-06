@@ -16,6 +16,7 @@ const factories = [];
 
 // API Endpoint for Factory Signup
 app.post("/api/factory", async (req, res) => {
+
   const {name, description} = req.body;
 
   if (!name || !description) {
@@ -24,7 +25,7 @@ app.post("/api/factory", async (req, res) => {
 
   try {
     // Call OpenAI API for Category Recommendation
-    const prompt = `Suggest a category for a factory with the following description: "${description}". Only provide the category name.`;
+    const prompt = `Suggest the most suitable category for a factory based on the following description: "${description}". Choose only one from the following options: Apparel, Technology, Sustainable Manufacturing. Only provide the category name as output.`;
     const response = await axios.post(
       "https://api.openai.com/v1/chat/completions",
       {
@@ -35,7 +36,7 @@ app.post("/api/factory", async (req, res) => {
       },
       {
         headers: {
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
+          Authorization:  process.env.OPENAI_API_KEY,
           "Content-Type": "application/json",
         },
       }
